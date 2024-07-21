@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+// Customer Model
 class Customer {
   final int? id;
   final String firstName;
@@ -22,6 +23,7 @@ class Customer {
   }
 }
 
+// Customer Provider
 class CustomerProvider with ChangeNotifier {
   late Database _database;
   List<Customer> _customers = [];
