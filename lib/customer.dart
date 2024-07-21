@@ -35,57 +35,80 @@ class CustomerProvider with ChangeNotifier {
   }
 
   Future<void> _initDatabase() async {
-    _database = await openDatabase(
-      join(await getDatabasesPath(), 'customer_database.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE customers(id INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT, lastName TEXT, address TEXT, birthday TEXT)",
-        );
-      },
-      version: 1,
-    );
-    _fetchCustomers();
+    try {
+      final databasePath = await getDatabasesPath();
+      final path = join(databasePath, 'customer_database.db');
+
+      _database = await openDatabase(
+        path,
+        onCreate: (db, version) {
+          return db.execute(
+            "CREATE TABLE customers(id INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT, lastName TEXT, address TEXT, birthday TEXT)",
+          );
+        },
+        version: 1,
+      );
+      await _fetchCustomers();
+    } catch (e) {
+      print('Error initializing database: $e');
+    }
   }
 
   Future<void> _fetchCustomers() async {
-    final List<Map<String, dynamic>> maps = await _database.query('customers');
-    _customers = List.generate(maps.length, (i) {
-      return Customer(
-        id: maps[i]['id'],
-        firstName: maps[i]['firstName'],
-        lastName: maps[i]['lastName'],
-        address: maps[i]['address'],
-        birthday: maps[i]['birthday'],
-      );
-    });
-    notifyListeners();
+    try {
+      final List<Map<String, dynamic>> maps = await _database.query('customers');
+      _customers = List.generate(maps.length, (i) {
+        return Customer(
+          id: maps[i]['id'],
+          firstName: maps[i]['firstName'],
+          lastName: maps[i]['lastName'],
+          address: maps[i]['address'],
+          birthday: maps[i]['birthday'],
+        );
+      });
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching customers: $e');
+    }
   }
 
   Future<void> addCustomer(Customer customer) async {
-    await _database.insert(
-      'customers',
-      customer.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    _fetchCustomers();
+    try {
+      await _database.insert(
+        'customers',
+        customer.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      await _fetchCustomers();
+    } catch (e) {
+      print('Error adding customer: $e');
+    }
   }
 
   Future<void> updateCustomer(Customer customer) async {
-    await _database.update(
-      'customers',
-      customer.toMap(),
-      where: 'id = ?',
-      whereArgs: [customer.id],
-    );
-    _fetchCustomers();
+    try {
+      await _database.update(
+        'customers',
+        customer.toMap(),
+        where: 'id = ?',
+        whereArgs: [customer.id],
+      );
+      await _fetchCustomers();
+    } catch (e) {
+      print('Error updating customer: $e');
+    }
   }
 
   Future<void> deleteCustomer(int id) async {
-    await _database.delete(
-      'customers',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    _fetchCustomers();
+    try {
+      await _database.delete(
+        'customers',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      await _fetchCustomers();
+    } catch (e) {
+      print('Error deleting customer: $e');
+    }
   }
 }

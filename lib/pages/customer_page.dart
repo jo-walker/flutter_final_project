@@ -182,7 +182,7 @@ class _CustomerFormPageState extends State<CustomerFormPage> {
                   },
                   child: Text('Delete'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
+                    backgroundColor: Colors.red, // Updated from primary to backgroundColor
                   ),
                 ),
             ],
