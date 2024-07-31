@@ -65,6 +65,7 @@ class _CustomerFormPageState extends State<CustomerFormPage> {
   late String _lastName;
   late String _address;
   late String _birthday;
+  late bool _copyLastCustomer;
 
   @override
   void initState() {
@@ -79,6 +80,7 @@ class _CustomerFormPageState extends State<CustomerFormPage> {
       _lastName = '';
       _address = '';
       _birthday = '';
+      _copyLastCustomer = false;
     }
   }
 
@@ -96,6 +98,34 @@ class _CustomerFormPageState extends State<CustomerFormPage> {
           key: _formKey,
           child: Column(
             children: [
+              if (widget.customer == null)
+                CheckboxListTile(
+                  title: Text('Copy from last customer'),
+                  value: _copyLastCustomer,
+                  onChanged: (bool? value) async {
+                    setState(() {
+                      _copyLastCustomer = value ?? false;
+                    });
+                    if (_copyLastCustomer) {
+                      Customer? lastCustomer = await customerProvider.getLastCustomerData();
+                      if (lastCustomer != null) {
+                        setState(() {
+                          _firstName = lastCustomer.firstName;
+                          _lastName = lastCustomer.lastName;
+                          _address = lastCustomer.address;
+                          _birthday = lastCustomer.birthday;
+                        });
+                      }
+                    } else {
+                      setState(() {
+                        _firstName = '';
+                        _lastName = '';
+                        _address = '';
+                        _birthday = '';
+                      });
+                    }
+                  },
+                ),
               TextFormField(
                 initialValue: _firstName,
                 decoration: InputDecoration(labelText: 'First Name'),
@@ -154,20 +184,23 @@ class _CustomerFormPageState extends State<CustomerFormPage> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (widget.customer == null) {
-                      customerProvider.addCustomer(Customer(
+                      Customer newCustomer = Customer(
                         firstName: _firstName,
                         lastName: _lastName,
                         address: _address,
                         birthday: _birthday,
-                      ));
+                      );
+                      customerProvider.addCustomer(newCustomer);
+                      customerProvider.saveLastCustomerData(newCustomer);
                     } else {
-                      customerProvider.updateCustomer(Customer(
+                      Customer updatedCustomer = Customer(
                         id: widget.customer!.id,
                         firstName: _firstName,
                         lastName: _lastName,
                         address: _address,
                         birthday: _birthday,
-                      ));
+                      );
+                      customerProvider.updateCustomer(updatedCustomer);
                     }
                     Navigator.pop(context);
                   }
@@ -182,7 +215,7 @@ class _CustomerFormPageState extends State<CustomerFormPage> {
                   },
                   child: Text('Delete'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // Updated from primary to backgroundColor
+                    backgroundColor: Colors.red,
                   ),
                 ),
             ],
