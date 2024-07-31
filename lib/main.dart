@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'customer.dart';
+import 'providers/customer_provider.dart';
 import 'pages/customer_page.dart';
 
 void main() {
