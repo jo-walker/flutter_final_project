@@ -1,18 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'flight_list_view.dart';
+import 'add_flight_page.dart';
+import 'update_flight_page.dart';
+import 'flight_repository.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart'; // Add this import
+import 'flight.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize sqflite ffi for desktop platforms
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
+  final flightRepository = FlightRepository();
+  await flightRepository.initDatabase();
+
+  runApp(MyApp(flightRepository: flightRepository));
 }
 
 class MyApp extends StatelessWidget {
+  final FlightRepository flightRepository;
+
+  MyApp({required this.flightRepository});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Final Project',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => flightRepository,
+      child: MaterialApp(
+        title: 'Final Project',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MainPage(),
+        routes: {
+          '/add_flight': (context) => AddFlightPage(),
+          '/update_flight': (context) => UpdateFlightPage(
+            flight: ModalRoute.of(context)!.settings.arguments as Flight,
+          ),
+        },
       ),
-      home: MainPage(),
     );
   }
 }
@@ -50,7 +79,7 @@ class MainPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FlightsListPage()),
+                  MaterialPageRoute(builder: (context) => FlightListView()),
                 );
               },
               child: Text('Flights List'),
@@ -94,20 +123,6 @@ class AirplaneListPage extends StatelessWidget {
       ),
       body: Center(
         child: Text('Airplane List Page Content'),
-      ),
-    );
-  }
-}
-
-class FlightsListPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Flights List Page'),
-      ),
-      body: Center(
-        child: Text('Flights List Page Content'),
       ),
     );
   }
