@@ -70,7 +70,7 @@ class CustomerDetailPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              customerProvider.deleteCustomer(customer.id);
+              customerProvider.deleteCustomer(customer.id!); //means this field is non-nullable
               Navigator.pop(context);
             },
           ),

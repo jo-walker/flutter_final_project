@@ -69,7 +69,7 @@ class AddCustomerPage extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final customer = Customer(
-                      id: DateTime.now().toString(),
+                      id: null,
                       firstName: _firstNameController.text,
                       lastName: _lastNameController.text,
                       address: _addressController.text,

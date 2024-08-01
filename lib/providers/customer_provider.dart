@@ -1,26 +1,62 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import '../dao/customer_dao.dart';
+import '../database/app_database.dart';
 import '../models/customer.dart';
 
 class CustomerProvider with ChangeNotifier {
   List<Customer> _customers = [];
+  late CustomerDAO _customerDAO;
+  String _error = '';
 
   List<Customer> get customers => _customers;
+  String get error => _error;
 
-  void addCustomer(Customer customer) {
-    _customers.add(customer);
+  CustomerProvider() {
+    _initDatabase();
+  }
+
+  Future<void> _initDatabase() async {
+    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    _customerDAO = database.customerDAO;
+    await _loadCustomers();
+  }
+
+  Future<void> _loadCustomers() async {
+    try {
+      _customers = await _customerDAO.findAllCustomers();
+    } catch (e) {
+      _error = 'Failed to load customers: $e';
+    }
     notifyListeners();
   }
 
-  void updateCustomer(Customer customer) {
-    final index = _customers.indexWhere((c) => c.id == customer.id);
-    if (index != -1) {
-      _customers[index] = customer;
+  Future<void> addCustomer(Customer customer) async {
+    try {
+      await _customerDAO.insertCustomer(customer);
+      await _loadCustomers();
+    } catch (e) {
+      _error = 'Failed to add customer: $e';
       notifyListeners();
     }
   }
 
-  void deleteCustomer(String id) {
-    _customers.removeWhere((c) => c.id == id);
-    notifyListeners();
+  Future<void> updateCustomer(Customer customer) async {
+    try {
+      await _customerDAO.updateCustomer(customer);
+      await _loadCustomers();
+    } catch (e) {
+      _error = 'Failed to update customer: $e';
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteCustomer(int id) async {
+    try {
+      await _customerDAO.deleteCustomer(Customer(id: id, firstName: '', lastName: '', address: '', birthday: ''));
+      await _loadCustomers();
+    } catch (e) {
+      _error = 'Failed to delete customer: $e';
+      notifyListeners();
+    }
   }
 }

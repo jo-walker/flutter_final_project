@@ -1,7 +1,9 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/foundation.dart';
-
+@entity
 class Customer {
-  final String id;
+  @primaryKey
+  final int? id; //means this field is nullable
   final String firstName;
   final String lastName;
   final String address;
