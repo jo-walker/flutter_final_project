@@ -91,6 +91,7 @@ class MainPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/customer');
+                // Navigator.pushNamed(context, '/airplane');
               },
               child: Text(AppLocalizations.of(context)!.translate('customer_list') ?? 'Customer List'),
             ),
