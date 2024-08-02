@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../AppLocalizations.dart';
 import '../models/customer.dart';
 import '../providers/customer_provider.dart';
 
@@ -24,7 +25,7 @@ class EditCustomerPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Customer'),
+        title: Text(AppLocalizations.of(context)!.translate('edit_customer') ?? 'Edit Customer'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,40 +35,40 @@ class EditCustomerPage extends StatelessWidget {
             children: [
               TextFormField(
                 controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.translate('first_name') ?? 'First Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter first name';
+                    return AppLocalizations.of(context)!.translate('enter_first_name') ?? 'Please enter first name';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.translate('last_name') ?? 'Last Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter last name';
+                    return AppLocalizations.of(context)!.translate('enter_last_name') ?? 'Please enter last name';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(labelText: 'Address'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.translate('address') ?? 'Address'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter address';
+                    return AppLocalizations.of(context)!.translate('enter_address') ?? 'Please enter address';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _birthdayController,
-                decoration: InputDecoration(labelText: 'Birthday'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.translate('birthday') ?? 'Birthday'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter birthday';
+                    return AppLocalizations.of(context)!.translate('enter_birthday') ?? 'Please enter birthday';
                   }
                   return null;
                 },
@@ -87,7 +88,7 @@ class EditCustomerPage extends StatelessWidget {
                     Navigator.pop(context);
                   }
                 },
-                child: Text('Update Customer'),
+                child: Text(AppLocalizations.of(context)!.translate('update_customer') ?? 'Update Customer')
               ),
             ],
           ),

@@ -15,7 +15,7 @@ dependencies:
   flutter_lints: ^3.0.0
   flutter_localizations:
     sdk: flutter
-  intl: any
+
   sqflite: ^2.0.0+4
   path_provider: ^2.0.9
   provider: ^6.0.3
@@ -27,6 +27,7 @@ dependencies:
   url_launcher: ^6.3.0
   floor: ^1.2.0
   path: ^1.8.0
+  json_annotation: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -34,7 +35,11 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   build_runner: ^2.1.7
   floor_generator: ^1.2.0
+  json_serializable: ^6.1.0
 
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/translations/de.json
+    - assets/translations/en.json

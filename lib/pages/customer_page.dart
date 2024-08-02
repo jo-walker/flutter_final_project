@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../AppLocalizations.dart';
 import '../models/customer.dart';
 import '../providers/customer_provider.dart';
 import 'add_customer_page.dart';
@@ -12,7 +13,7 @@ class CustomerListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Customer List'),
+        title: Text(AppLocalizations.of(context)!.translate('customer_list') ?? 'Customer List'), // ?? is null check operator (if null, do this)
       ),
       body: Column(
         children: [
@@ -45,7 +46,7 @@ class CustomerListPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => AddCustomerPage()),
                 );
               },
-              child: Text('Add Customer'),
+              child: Text(AppLocalizations.of(context)!.translate('add_customer') ?? 'Add Customer'),
             ),
           ),
         ],
@@ -65,10 +66,10 @@ class CustomerDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Customer Details'),
+        title: Text(AppLocalizations.of(context)!.translate('customer_details') ?? 'Customer Details'),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+          icon: Icon(Icons.delete),
             onPressed: () {
               customerProvider.deleteCustomer(customer.id!); //means this field is non-nullable
               Navigator.pop(context);
@@ -81,10 +82,10 @@ class CustomerDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('First Name: ${customer.firstName}'),
-            Text('Last Name: ${customer.lastName}'),
-            Text('Address: ${customer.address}'),
-            Text('Birthday: ${customer.birthday}'),
+            Text('${AppLocalizations.of(context)!.translate('first_name') ?? 'First Name'}: ${customer.firstName}'),
+            Text('${AppLocalizations.of(context)!.translate('last_name') ?? 'Last Name'}: ${customer.lastName}'),
+            Text('${AppLocalizations.of(context)!.translate('address') ?? 'Address'}: ${customer.address}'),
+            Text('${AppLocalizations.of(context)!.translate('birthday') ?? 'Birthday'}: ${customer.birthday}'),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -95,7 +96,7 @@ class CustomerDetailPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Edit Customer'),
+              child: Text(AppLocalizations.of(context)!.translate('edit') ?? 'Edit'),
             ),
           ],
         ),
