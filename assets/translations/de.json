@@ -1,0 +1,18 @@
+{
+  "main_page": "Hauptseite",
+  "customer_list": "Kundenliste",
+  "add_customer": "Kunden hinzufügen",
+  "edit_customer": "Kunden bearbeiten",
+  "first_name": "Vorname",
+  "last_name": "Nachname",
+  "address": "Adresse",
+  "birthday": "Geburtstag",
+  "enter_first_name": "Bitte Vornamen eingeben",
+  "enter_last_name": "Bitte Nachnamen eingeben",
+  "enter_address": "Bitte Adresse eingeben",
+  "enter_birthday": "Bitte Geburtstag eingeben",
+  "update_customer": "Kunden aktualisieren",
+  "customer_details": "Kundendetails",
+  "delete": "Löschen",
+  "edit": "Bearbeiten"
+}

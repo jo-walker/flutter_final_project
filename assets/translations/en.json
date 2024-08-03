@@ -1,0 +1,18 @@
+{
+  "main_page": "Main Page",
+  "customer_list": "Customer List",
+  "add_customer": "Add Customer",
+  "edit_customer": "Edit Customer",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "address": "Address",
+  "birthday": "Birthday",
+  "enter_first_name": "Please enter first name",
+  "enter_last_name": "Please enter last name",
+  "enter_address": "Please enter address",
+  "enter_birthday": "Please enter birthday",
+  "update_customer": "Update Customer",
+  "customer_details": "Customer Details",
+  "delete": "Delete",
+  "edit": "Edit"
+}
