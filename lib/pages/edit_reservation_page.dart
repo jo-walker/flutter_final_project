@@ -89,6 +89,7 @@ class EditReservationPage extends StatelessWidget {
                   }
                 },
                 child: Text('Update Reservation'),
+
               ),
             ],
           ),

@@ -69,6 +69,7 @@ class ReservationDetailPage extends StatelessWidget {
                 );
               },
               child: Text('Edit Reservation'),
+
             ),
           ],
         ),

@@ -10,6 +10,7 @@ abstract class $AppDatabaseBuilderContract {
   /// Adds migrations to the builder.
   $AppDatabaseBuilderContract addMigrations(List<Migration> migrations);
 
+
   /// Adds a database [Callback] to the builder.
   $AppDatabaseBuilderContract addCallback(Callback callback);
 

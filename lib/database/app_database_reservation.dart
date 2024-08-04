@@ -9,6 +9,7 @@ part 'app_database_reservation.g.dart';
 
 @TypeConverters([DateTimeConverter])
 @Database(version: 1, entities: [Reservation])
+
 abstract class AppDatabase extends FloorDatabase {
   ReservationDAO get reservationDAO;
 }

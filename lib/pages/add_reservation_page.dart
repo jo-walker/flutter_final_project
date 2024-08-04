@@ -79,6 +79,7 @@ class AddReservationPage extends StatelessWidget {
                       date: DateTime.parse(_dateController.text),
                     );
                     reservationProvider.addReservation(reservation);
+
                     Navigator.pop(context);
                   }
                 },

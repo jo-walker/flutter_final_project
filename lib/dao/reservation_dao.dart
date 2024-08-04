@@ -10,6 +10,7 @@ abstract class ReservationDAO {
   Future<void> insertReservation(Reservation reservation);
 
   @update
+
   Future<void> updateReservation(Reservation reservation);
 
   @delete
