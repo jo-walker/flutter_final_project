@@ -1,0 +1,16 @@
+{
+  "title": "Aplicación de Reservas",
+  "add_reservation": "Añadir Reserva",
+  "customer_name": "Nombre del Cliente",
+  "flight_number": "Número de Vuelo",
+  "reservation_name": "Nombre de la Reserva",
+  "date": "Fecha (YYYY-MM-DD)",
+  "add": "Añadir",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "reservation_list": "Lista de Reservas",
+  "reservation_details": "Detalles de la Reserva",
+  "delete_confirmation": "¿Está seguro de que desea eliminar esta reserva?",
+  "cancel": "Cancelar",
+  "update_reservation": "Actualizar Reserva"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Reservation App",
+  "add_reservation": "Add Reservation",
+  "customer_name": "Customer Name",
+  "flight_number": "Flight Number",
+  "reservation_name": "Reservation Name",
+  "date": "Date (YYYY-MM-DD)",
+  "add": "Add",
+  "edit": "Edit",
+  "delete": "Delete",
+  "reservation_list": "Reservation List",
+  "reservation_details": "Reservation Details",
+  "delete_confirmation": "Are you sure you want to delete this reservation?",
+  "cancel": "Cancel",
+  "update_reservation": "Update Reservation"
+}
