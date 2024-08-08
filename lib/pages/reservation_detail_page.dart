@@ -53,26 +53,52 @@ class ReservationDetailPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${localizations?.translate('customer_name') ?? 'Customer Name'}: ${reservation.customerName}'),
-            Text('${localizations?.translate('flight_number') ?? 'Flight Number'}: ${reservation.flightNumber}'),
-            Text('${localizations?.translate('reservation_name') ?? 'Reservation Name'}: ${reservation.reservationName}'),
-            Text('${localizations?.translate('date') ?? 'Date'}: ${reservation.date.toLocal()}'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditReservationPage(reservation: reservation),
+        child: Card(
+          color: Colors.blue[50],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${localizations?.translate('customer_name') ?? 'Customer Name'}: ${reservation.customerName}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  '${localizations?.translate('flight_number') ?? 'Flight Number'}: ${reservation.flightNumber}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  '${localizations?.translate('reservation_name') ?? 'Reservation Name'}: ${reservation.reservationName}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  '${localizations?.translate('date') ?? 'Date'}: ${reservation.date.toLocal()}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditReservationPage(reservation: reservation),
+                      ),
+                    );
+                  },
+                  child: Text(localizations?.translate('edit') ?? 'Edit'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Use backgroundColor instead of primary
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 18),
                   ),
-                );
-              },
-              child: Text(localizations?.translate('edit') ?? 'Edit'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

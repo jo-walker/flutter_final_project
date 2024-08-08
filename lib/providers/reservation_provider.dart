@@ -59,4 +59,11 @@ class ReservationProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<Reservation> searchReservations(String query) {
+    return _reservations.where((reservation) {
+      return reservation.customerName.toLowerCase().contains(query.toLowerCase()) ||
+          reservation.reservationName.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
 }

@@ -4,34 +4,30 @@ import '../models/reservation.dart';
 import '../providers/reservation_provider.dart';
 import '../l10n/app_localizations.dart';
 
-/// The `EditReservationPage` class is responsible for allowing users to edit an existing reservation.
-class EditReservationPage extends StatelessWidget {
-  /// The reservation being edited.
+class EditReservationPage extends StatefulWidget {
   final Reservation reservation;
 
-  /// A global key for the form.
+  EditReservationPage({Key? key, required this.reservation}) : super(key: key);
+
+  @override
+  _EditReservationPageState createState() => _EditReservationPageState();
+}
+
+class _EditReservationPageState extends State<EditReservationPage> {
   final _formKey = GlobalKey<FormState>();
 
-  /// Controller for the customer name text field.
   final _customerNameController = TextEditingController();
-
-  /// Controller for the flight number text field.
   final _flightNumberController = TextEditingController();
-
-  /// Controller for the reservation name text field.
   final _reservationNameController = TextEditingController();
-
-  /// Controller for the date text field.
   final _dateController = TextEditingController();
 
-  /// Constructs an `EditReservationPage`.
-  ///
-  /// Sets the initial values of the text field controllers to the values of the given reservation.
-  EditReservationPage({Key? key, required this.reservation}) : super(key: key) {
-    _customerNameController.text = reservation.customerName;
-    _flightNumberController.text = reservation.flightNumber;
-    _reservationNameController.text = reservation.reservationName;
-    _dateController.text = reservation.date.toIso8601String().split('T').first; // Format date to YYYY-MM-DD
+  @override
+  void initState() {
+    super.initState();
+    _customerNameController.text = widget.reservation.customerName;
+    _flightNumberController.text = widget.reservation.flightNumber;
+    _reservationNameController.text = widget.reservation.reservationName;
+    _dateController.text = widget.reservation.date.toIso8601String().split('T').first; // Format date to YYYY-MM-DD
   }
 
   @override
@@ -63,74 +59,104 @@ class EditReservationPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _customerNameController,
-                decoration: InputDecoration(labelText: localizations?.translate('customer_name') ?? 'Customer Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('customer_name') ?? 'Please enter customer name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _flightNumberController,
-                decoration: InputDecoration(labelText: localizations?.translate('flight_number') ?? 'Flight Number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('flight_number') ?? 'Please enter flight number';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _reservationNameController,
-                decoration: InputDecoration(labelText: localizations?.translate('reservation_name') ?? 'Reservation Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('reservation_name') ?? 'Please enter reservation name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _dateController,
-                decoration: InputDecoration(labelText: localizations?.translate('date') ?? 'Date (YYYY-MM-DD)'),
-                keyboardType: TextInputType.datetime,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('date') ?? 'Please enter date';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    final updatedReservation = Reservation(
-                      id: reservation.id,
-                      customerName: _customerNameController.text,
-                      flightNumber: _flightNumberController.text,
-                      reservationName: _reservationNameController.text,
-                      date: DateTime.parse(_dateController.text),
-                    );
-                    reservationProvider.updateReservation(updatedReservation);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Reservation Updated')),
-                    );
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text(localizations?.translate('update_reservation') ?? 'Update Reservation'),
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _customerNameController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('customer_name') ?? 'Customer Name',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('customer_name') ?? 'Please enter customer name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _flightNumberController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('flight_number') ?? 'Flight Number',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('flight_number') ?? 'Please enter flight number';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _reservationNameController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('reservation_name') ?? 'Reservation Name',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('reservation_name') ?? 'Please enter reservation name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _dateController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('date') ?? 'Date (YYYY-MM-DD)',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('date') ?? 'Please enter date';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final updatedReservation = Reservation(
+                        id: widget.reservation.id,
+                        customerName: _customerNameController.text,
+                        flightNumber: _flightNumberController.text,
+                        reservationName: _reservationNameController.text,
+                        date: DateTime.parse(_dateController.text),
+                      );
+                      reservationProvider.updateReservation(updatedReservation);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Reservation Updated')),
+                      );
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(localizations?.translate('update_reservation') ?? 'Update Reservation'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Use backgroundColor instead of primary
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

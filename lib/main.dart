@@ -28,6 +28,11 @@ class MyApp extends StatelessWidget {
             title: 'Reservation App',
             theme: ThemeData(
               primarySwatch: Colors.blue,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              textTheme: TextTheme(
+                headlineLarge: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                bodyLarge: TextStyle(fontSize: 18.0),
+              ),
             ),
             locale: localeProvider.locale,
             localizationsDelegates: [

@@ -5,30 +5,43 @@ import '../providers/reservation_provider.dart';
 import '../providers/encrypted_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
 
-/// The `AddReservationPage` class is responsible for allowing users to add a new reservation.
-class AddReservationPage extends StatelessWidget {
-  /// A global key for the form.
+class AddReservationPage extends StatefulWidget {
+  AddReservationPage({Key? key}) : super(key: key);
+
+  @override
+  _AddReservationPageState createState() => _AddReservationPageState();
+}
+
+class _AddReservationPageState extends State<AddReservationPage> {
   final _formKey = GlobalKey<FormState>();
 
-  /// Controller for the customer name text field.
   final _customerNameController = TextEditingController();
-
-  /// Controller for the flight number text field.
   final _flightNumberController = TextEditingController();
-
-  /// Controller for the reservation name text field.
   final _reservationNameController = TextEditingController();
-
-  /// Controller for the date text field.
   final _dateController = TextEditingController();
 
-  /// Constructs an `AddReservationPage`.
-  AddReservationPage({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    _loadLastReservationData();
+  }
+
+  Future<void> _loadLastReservationData() async {
+    final preferencesProvider = EncryptedPreferencesProvider();
+    final lastCustomerName = await preferencesProvider.getData('last_customer_name');
+    final lastFlightNumber = await preferencesProvider.getData('last_flight_number');
+    final lastReservationName = await preferencesProvider.getData('last_reservation_name');
+    final lastDate = await preferencesProvider.getData('last_date');
+
+    if (lastCustomerName != null) _customerNameController.text = lastCustomerName;
+    if (lastFlightNumber != null) _flightNumberController.text = lastFlightNumber;
+    if (lastReservationName != null) _reservationNameController.text = lastReservationName;
+    if (lastDate != null) _dateController.text = lastDate;
+  }
 
   @override
   Widget build(BuildContext context) {
     final reservationProvider = Provider.of<ReservationProvider>(context);
-    final preferencesProvider = EncryptedPreferencesProvider();
     final localizations = AppLocalizations.of(context);
 
     return Scaffold(
@@ -55,77 +68,111 @@ class AddReservationPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _customerNameController,
-                decoration: InputDecoration(labelText: localizations?.translate('customer_name') ?? 'Customer Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('customer_name') ?? 'Please enter customer name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _flightNumberController,
-                decoration: InputDecoration(labelText: localizations?.translate('flight_number') ?? 'Flight Number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('flight_number') ?? 'Please enter flight number';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _reservationNameController,
-                decoration: InputDecoration(labelText: localizations?.translate('reservation_name') ?? 'Reservation Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('reservation_name') ?? 'Please enter reservation name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _dateController,
-                decoration: InputDecoration(labelText: localizations?.translate('date') ?? 'Date (YYYY-MM-DD)'),
-                keyboardType: TextInputType.datetime,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations?.translate('date') ?? 'Please enter date';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    final reservation = Reservation(
-                      id: null,
-                      customerName: _customerNameController.text,
-                      flightNumber: _flightNumberController.text,
-                      reservationName: _reservationNameController.text,
-                      date: DateTime.parse(_dateController.text),
-                    );
-                    reservationProvider.addReservation(reservation);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Reservation Added')),
-                    );
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _customerNameController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('customer_name') ?? 'Customer Name',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('customer_name') ?? 'Please enter customer name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _flightNumberController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('flight_number') ?? 'Flight Number',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('flight_number') ?? 'Please enter flight number';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _reservationNameController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('reservation_name') ?? 'Reservation Name',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('reservation_name') ?? 'Please enter reservation name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _dateController,
+                  decoration: InputDecoration(
+                    labelText: localizations?.translate('date') ?? 'Date (YYYY-MM-DD)',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations?.translate('date') ?? 'Please enter date';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final reservation = Reservation(
+                        id: null,
+                        customerName: _customerNameController.text,
+                        flightNumber: _flightNumberController.text,
+                        reservationName: _reservationNameController.text,
+                        date: DateTime.parse(_dateController.text),
+                      );
+                      reservationProvider.addReservation(reservation);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Reservation Added')),
+                      );
 
-                    await preferencesProvider.saveData('last_reservation', _reservationNameController.text);
+                      final preferencesProvider = EncryptedPreferencesProvider();
+                      await preferencesProvider.saveData('last_customer_name', _customerNameController.text);
+                      await preferencesProvider.saveData('last_flight_number', _flightNumberController.text);
+                      await preferencesProvider.saveData('last_reservation_name', _reservationNameController.text);
+                      await preferencesProvider.saveData('last_date', _dateController.text);
 
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text(localizations?.translate('add') ?? 'Add'),
-              ),
-            ],
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(localizations?.translate('add') ?? 'Add'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Use backgroundColor instead of primary
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
