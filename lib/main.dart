@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'flight_list_view.dart';
@@ -75,14 +76,15 @@ class MainPage extends StatelessWidget {
               },
               child: Text('Airplane List'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FlightListView()),
-                );
-              },
-              child: Text('Flights List'),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FlightListView()),
+          );
+        },
+        child: Text('Flights List'),
+
             ),
             ElevatedButton(
               onPressed: () {

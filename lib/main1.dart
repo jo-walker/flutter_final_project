@@ -1,46 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'flight_list_view.dart';
-import 'add_flight_page.dart';
-import 'update_flight_page.dart';
 import 'flight_repository.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart'; // Add this import
-import 'flight.dart';
+import 'app_localizations.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize sqflite ffi for desktop platforms
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
 
   final flightRepository = FlightRepository();
   await flightRepository.initDatabase();
 
-  runApp(MyApp(flightRepository: flightRepository));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => flightRepository),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  final FlightRepository flightRepository;
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
 
-  MyApp({required this.flightRepository});
+  static void setLocale(BuildContext context, Locale newLocale) async {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLanguage(newLocale);
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = Locale('en', 'US');
+
+  void changeLanguage(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => flightRepository,
-      child: MaterialApp(
-        title: 'Airline Flights',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: FlightListView(),
-        routes: {
-          '/add_flight': (context) => AddFlightPage(),
-          '/update_flight': (context) => UpdateFlightPage(
-            flight: ModalRoute.of(context)!.settings.arguments as Flight,
-          ),
-        },
+    return MaterialApp(
+      locale: _locale,
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('fr', 'FR'),
+      ],
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,  // Add this if you have Cupertino widgets
+      ],
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Lato',
       ),
+      debugShowCheckedModeBanner: false,  // Removes the debug banner
+      home: FlightListView(),
     );
   }
 }
