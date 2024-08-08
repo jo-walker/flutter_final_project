@@ -1,0 +1,9 @@
+{
+  "title": "Airplane List",
+  "passengers": "Passengers: {passengerCount}",
+  "add_airplane": "Add Airplane",
+  "delete_airplane": "Delete Airplane",
+  "delete_confirm": "Are you sure you want to delete {airplaneType}?",
+  "cancel": "Cancel",
+  "delete": "Delete"
+}

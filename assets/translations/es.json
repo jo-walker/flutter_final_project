@@ -1,0 +1,9 @@
+{
+  "title": "Lista de Aviones",
+  "passengers": "Pasajeros: {passengerCount}",
+  "add_airplane": "Agregar Avión",
+  "delete_airplane": "Eliminar Avión",
+  "delete_confirm": "¿Está seguro de que desea eliminar {airplaneType}?",
+  "cancel": "Cancelar",
+  "delete": "Eliminar"
+}
